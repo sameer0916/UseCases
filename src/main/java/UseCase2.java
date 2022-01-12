@@ -42,7 +42,7 @@ public class UseCase2 {
                         orderBy(customers.col("customer_id"));
                 result.show();
 
-                String path = "C:\\Users\\Sameer Mittal\\IdeaProjects\\UseCases\\src\\main\\UseCaseOutput\\UseCase2";
+                String path=System.getenv("OUTPUT_PATH")+"\\UseCase2";
                 result.coalesce(1).write().option("header", true).mode("overwrite").csv(path);
                 logger.info("*****************OUTPUT WRITTEN TO FILE SUCCESSFULLY*******************");
             }

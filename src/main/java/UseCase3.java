@@ -51,7 +51,7 @@ public class UseCase3 {
                         orderBy(col("customer_id"), col("customer_revenue").desc());
 
                 result.show();
-                String path = "C:\\Users\\Sameer Mittal\\IdeaProjects\\UseCases\\src\\main\\UseCaseOutput\\UseCase3";
+                String path=System.getenv("OUTPUT_PATH")+"\\UseCase3";
                 result.coalesce(1).write().option("header", true).mode("overwrite").csv(path);
                 logger.info("\n\n************************OUTPUT WRITTEN TO FILE***************************\n\n");
             }
