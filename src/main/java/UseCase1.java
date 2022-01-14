@@ -21,6 +21,17 @@ public class UseCase1 {
         }
         return false;
     }
+    public static boolean validateResult(long count)
+    {
+        if(count==4696)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
     public static void main(String[]args)
     {
@@ -42,9 +53,20 @@ public class UseCase1 {
                         groupBy(customers.col("customer_id"),customers.col("customer_fname"),customers.col("customer_lname")).
                         agg(count(lit(1)).alias("customer_order_count")).orderBy(customers.col("customer_id"),col("customer_order_count").desc());
                 result.show();
-                String path=System.getenv("OUTPUT_PATH")+"\\UseCase1";
-                result.coalesce(1).write().option("header",true).mode("overwrite").csv(path);
-                logger.info("*************************File Saved Successfully***************");
+                long count=result.count();
+                if(validateResult(count))
+                {
+                    logger.info("***********************RESULT VALIDATED*******************");
+                    String path=System.getenv("OUTPUT_PATH")+"\\UseCase1";
+                    result.coalesce(1).write().option("header",true).mode("overwrite").csv(path);
+                    logger.info("*************************File Saved Successfully***************");
+
+                }
+                else
+                {
+                    logger.error("COUNT NOT MATCHED");
+                }
+
             }
             catch(Exception ex)
             {

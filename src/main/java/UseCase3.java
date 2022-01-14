@@ -21,6 +21,17 @@ public class UseCase3 {
         }
         return false;
     }
+    public static boolean validateResult(long count)
+    {
+        if(count==1941)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
     public static void main(String[] args)
     {
         logger.info("****************************************RUNNING USECASE3**********************************\n\n\n");
@@ -51,9 +62,19 @@ public class UseCase3 {
                         orderBy(col("customer_id"), col("customer_revenue").desc());
 
                 result.show();
-                String path=System.getenv("OUTPUT_PATH")+"\\UseCase3";
-                result.coalesce(1).write().option("header", true).mode("overwrite").csv(path);
-                logger.info("\n\n************************OUTPUT WRITTEN TO FILE***************************\n\n");
+                long count=result.count();
+                if(validateResult(count))
+                {
+                    logger.info("***********************RESULT VALIDATED*******************");
+                    String path=System.getenv("OUTPUT_PATH")+"\\UseCase3";
+                    result.coalesce(1).write().option("header", true).mode("overwrite").csv(path);
+                    logger.info("\n\n************************OUTPUT WRITTEN TO FILE***************************\n\n");
+                }
+                else
+                {
+                    logger.error("COUNT NOT MATCHED");
+                }
+
             }
             catch (Exception ex)
             {

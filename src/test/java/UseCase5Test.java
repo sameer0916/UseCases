@@ -18,4 +18,16 @@ public class UseCase5Test {
         String orderPath="C:\\Users\\Sameer Mittal\\IdeaProjects\\UseCases\\src\\main\\resources\\retail_db\\orders\\part-000001";
         assertFalse(UseCase5.checkFileExist(orderPath));
     }
+    @Test
+    public void ValidResult()
+    {
+        long count=5;
+        assertTrue(UseCase5.validateResult(count));
+    }
+    @Test
+    public void NotValidResult()
+    {
+        long count = 4;
+        assertFalse(UseCase5.validateResult(count));
+    }
 }
