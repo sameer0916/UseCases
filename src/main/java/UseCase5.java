@@ -20,6 +20,17 @@ public class UseCase5 {
     }
         return false;
     }
+    public static boolean validateResult(long count)
+    {
+        if(count==5)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
     public static void main(String[]args)
     {
         logger.info("****************************************RUNNING USECASE5**********************************\n\n\n");
@@ -45,9 +56,19 @@ public class UseCase5 {
                         orderBy(col("department_id"));
                 result.show();
 
-                String path=System.getenv("OUTPUT_PATH")+"\\UseCase5";
-                result.coalesce(1).write().option("header", true).mode("overwrite").csv(path);
-                logger.info("\n\n************************OUTPUT WRITTEN TO FILE***************************\n\n");
+                long count=result.count();
+                if(validateResult(count))
+                {
+                    String path=System.getenv("OUTPUT_PATH")+"\\UseCase5";
+                    result.coalesce(1).write().option("header", true).mode("overwrite").csv(path);
+                    logger.info("\n\n************************OUTPUT WRITTEN TO FILE***************************\n\n");;
+                }
+                else
+                {
+                    logger.error("COUNT NOT MATCHED");
+                }
+
+
             }
             catch(Exception ex)
             {

@@ -19,6 +19,17 @@ public class UseCase4 {
         }
         return false;
     }
+    public static boolean validateResult(long count)
+    {
+        if(count==33)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
     public static void main(String[] args) {
         logger.info("****************************************RUNNING USECASE4**********************************\n\n\n");
         String orderPath = System.getenv("ORDER_PATH");
@@ -48,9 +59,19 @@ public class UseCase4 {
                         orderBy(col("category_id"));
                 result.show();
 
-                String path=System.getenv("OUTPUT_PATH")+"\\UseCase4";
-                result.coalesce(1).write().option("header", true).mode("overwrite").csv(path);
-                logger.info("\n\n************************OUTPUT WRITTEN TO FILE***************************\n\n");
+                long count=result.count();
+                if(validateResult(count))
+                {
+                    String path=System.getenv("OUTPUT_PATH")+"\\UseCase4";
+                    result.coalesce(1).write().option("header", true).mode("overwrite").csv(path);
+                    logger.info("\n\n************************OUTPUT WRITTEN TO FILE***************************\n\n");
+                }
+                else
+                {
+                    logger.error("COUNT NOT MATCHED");
+                }
+
+
             }
             catch (Exception ex)
             {
